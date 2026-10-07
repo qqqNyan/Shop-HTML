@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蝦皮購物 | 純 HTML/CSS 版</title>
+    
+    <!-- Font Awesome for Icons (CSS only) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #ee4d2d;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            font-size: 13px;
+            color: white;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-nav a:hover {
+            opacity: 0.8;
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            padding: 10px 10px 20px;
+            gap: 40px;
+        }
+
+        .logo {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .search-box {
+            display: flex;
+            background: white;
+            border-radius: 3px;
+            padding: 3px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            border: none;
+            padding: 8px 15px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background-color: #f05d40;
+        }
+
+        .search-tags {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .cart-icon {
+            color: white;
+            font-size: 24px;
+            position: relative;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            background: white;
+            color: #ee4d2d;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 1px 6px;
+            border: 2px solid #ee4d2d;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .hero-main {
+            flex: 2;
+            background-color: #ddd;
+            border-radius: 3px;
+            overflow: hidden;
+            aspect-ratio: 2 / 1;
+        }
+
+        .hero-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .hero-side-img {
+            flex: 1;
+            background-color: #ddd;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .hero img, .hero-side-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Categories */
+        .section-box {
+            background-color: white;
+            border-radius: 3px;
+            margin-top: 20px;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            padding: 15px 20px;
+            font-weight: bold;
+            color: #555;
+            border-bottom: 1px solid #f2f2f2;
+            font-size: 16px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 10px;
+            border-right: 1px solid #f2f2f2;
+            border-bottom: 1px solid #f2f2f2;
+            transition: all 0.2s;
+        }
+
+        .category-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .cat-icon-circle {
+            width: 45px;
+            height: 45px;
+            background: #f9f9f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #555;
+        }
+
+        .category-name {
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Daily Discover Products */
+        .sticky-title {
+            position: sticky;
+            top: 110px;
+            background: white;
+            padding: 15px 0;
+            text-align: center;
+            color: #ee4d2d;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 4px solid #ee4d2d;
+            z-index: 50;
+            margin-top: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            border: 1px solid #ee4d2d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #eee;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255, 212, 36, 0.9);
+            color: #ee4d2d;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 5px;
+        }
+
+        .product-info {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 13px;
+            color: #222;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            height: 36px;
+        }
+
+        .product-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .price {
+            color: #ee4d2d;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .price span {
+            font-size: 12px;
+        }
+
+        .sold {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .category-grid { grid-template-columns: repeat(5, 1fr); }
+            .product-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .header-top { display: none; }
+            .hero-side { display: none; }
+            .category-grid { grid-template-columns: repeat(4, 1fr); }
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+            .header-main { gap: 15px; }
+            .logo span { display: none; } /* Hide text, keep icon */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Area -->
+    <header class="header">
+        <div class="container">
+            <!-- Top Nav -->
+            <div class="header-top">
+                <div class="header-nav">
+                    <a href="#">賣家中心</a>
+                    <span>|</span>
+                    <a href="#">下載</a>
+                    <span>|</span>
+                    <span>追蹤我們</span>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-line"></i></a>
+                </div>
+                <div class="header-nav">
+                    <a href="#"><i class="far fa-bell"></i> 通知總覽</a>
+                    <a href="#"><i class="far fa-question-circle"></i> 幫助中心</a>
+                    <a href="#"><i class="fas fa-globe"></i> 繁體中文</a>
+                    <a href="#">註冊</a>
+                    <span>|</span>
+                    <a href="#">登入</a>
+                </div>
+            </div>
+
+            <!-- Main Search Area -->
+            <div class="header-main">
+                <a href="#" class="logo">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Shopee</span>
+                </a>
+
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="在 蝦皮購物 搜尋">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="search-tags">
+                        <a href="#">iPhone 15</a>
+                        <a href="#">口罩</a>
+                        <a href="#">水壺</a>
+                        <a href="#">洋裝</a>
+                        <a href="#">行動電源</a>
+                        <a href="#">衛生紙</a>
+                        <a href="#">耳機</a>
+                    </div>
+                </div>
+
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">3</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        
+        <!-- Hero Banners -->
+        <section class="hero">
+            <div class="hero-main">
+                <img src="https://placehold.co/800x400/ffe4e1/ee4d2d?text=Shopee+Super+Sale" alt="Main Banner">
+            </div>
+            <div class="hero-side">
+                <div class="hero-side-img">
+                    <img src="https://placehold.co/400x195/e6f7ff/007bff?text=Free+Shipping" alt="Side Banner 1">
+                </div>
+                <div class="hero-side-img">
+                    <img src="https://placehold.co/400x195/fff3e0/ff9800?text=Brand+Festival" alt="Side Banner 2">
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="section-box">
+            <div class="section-header">分類</div>
+            <div class="category-grid">
+                <!-- Hardcoding categories since JS is forbidden -->
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-tshirt text-pink-500" style="color: #ec4899;"></i></div>
+                    <span class="category-name">男女裝</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-shoe-prints" style="color: #3b82f6;"></i></div>
+                    <span class="category-name">鞋子</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-laptop" style="color: #4b5563;"></i></div>
+                    <span class="category-name">3C資訊</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-pump-medical" style="color: #ef4444;"></i></div>
+                    <span class="category-name">美妝保健</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-couch" style="color: #ca8a04;"></i></div>
+                    <span class="category-name">居家生活</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-basketball-ball" style="color: #f97316;"></i></div>
+                    <span class="category-name">運動休閒</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-gamepad" style="color: #a855f7;"></i></div>
+                    <span class="category-name">電玩遊戲</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-book" style="color: #16a34a;"></i></div>
+                    <span class="category-name">書籍文創</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-paw" style="color: #fb923c;"></i></div>
+                    <span class="category-name">寵物</span>
+                </a>
+                <a href="#" class="category-item">
+                    <div class="cat-icon-circle"><i class="fas fa-hamburger" style="color: #eab308;"></i></div>
+                    <span class="category-name">美食伴手禮</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Daily Discover Section -->
+        <div class="sticky-title">每日新發現</div>
+        
+        <section class="product-grid">
+            <!-- Product 1 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/e2e8f0/cccccc?text=iPhone" alt="Product">
+                    <div class="product-tag">商城</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Apple iPhone 15 Pro Max 256G 鈦金屬 (台灣原廠公司貨)</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>42,500</div>
+                        <div class="sold">已售出 1.2萬</div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Product 2 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f1f5f9/cccccc?text=Pants" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">韓版高腰顯瘦直筒牛仔褲 女生長褲 寬褲 牛仔長褲</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>299</div>
+                        <div class="sold">已售出 5,400</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 3 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f8fafc/cccccc?text=Mouse" alt="Product">
+                    <div class="product-tag" style="background:#ee4d2d; color:white;">免運</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">【免運】Logitech 羅技 G304 遊戲滑鼠 無線滑鼠 電競滑鼠</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>990</div>
+                        <div class="sold">已售出 8,200</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 4 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/e2e8f0/cccccc?text=Tissue" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">舒潔 棉柔舒適抽取衛生紙 110抽x72包 箱購</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>899</div>
+                        <div class="sold">已售出 2.5萬</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 5 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f1f5f9/cccccc?text=Shoes" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Nike Air Force 1 經典全白 休閒鞋 男女鞋 小白鞋</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>3,180</div>
+                        <div class="sold">已售出 2,100</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 6 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f8fafc/cccccc?text=AirPods" alt="Product">
+                    <div class="product-tag">商城</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">AirPods Pro 第2代 藍牙耳機 降噪 耳機</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>6,800</div>
+                        <div class="sold">已售出 4,200</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 7 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/e2e8f0/cccccc?text=T-Shirt" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">特級純棉素色短袖T恤 男裝 女裝 情侶T 多色可選</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>150</div>
+                        <div class="sold">已售出 3.4萬</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 8 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f1f5f9/cccccc?text=Bottle" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">大容量水壺 2000ml 運動水壺 帶刻度 吸管水壺 健身</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>129</div>
+                        <div class="sold">已售出 1.5萬</div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Product 9 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f8fafc/cccccc?text=Switch" alt="Product">
+                    <div class="product-tag">10%折</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Switch 主機 OLED 台灣公司貨 紅白機 電玩</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>9,980</div>
+                        <div class="sold">已售出 3,300</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 10 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/e2e8f0/cccccc?text=Mask" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">醫療口罩 50入 台灣製造 雙鋼印 防護口罩</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>99</div>
+                        <div class="sold">已售出 5萬+</div>
+                    </div>
+                </div>
+            </a>
+             <!-- Product 11 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f1f5f9/cccccc?text=Cream" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Kiehl's 契爾氏 冰河醣蛋白保濕霜 50ml</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>1,250</div>
+                        <div class="sold">已售出 1,800</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Product 12 -->
+            <a href="#" class="product-card">
+                <div class="product-image">
+                    <img src="https://placehold.co/400x400/f8fafc/cccccc?text=Bed" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">日系簡約純棉床包組 單人/雙人/加大 三件套 四件套</div>
+                    <div class="product-price-row">
+                        <div class="price"><span>$</span>450</div>
+                        <div class="sold">已售出 1.1萬</div>
+                    </div>
+                </div>
+            </a>
+        </section>
+        
+        <!-- Load More -->
+        <div style="text-align: center; margin: 30px 0;">
+            <button style="background: white; border: 1px solid #ccc; padding: 10px 100px; border-radius: 2px; cursor: pointer; color: #555;">查看更多</button>
+        </div>
+
+    </main>
+
+    <footer style="background: white; border-top: 4px solid #ee4d2d; padding: 40px 0; margin-top: 20px;">
+        <div class="container" style="text-align: center; color: #777; font-size: 13px;">
+            <p>&copy; 2026 純 HTML/CSS 仿 Shopee 雛型。版權所有。</p>
+        </div>
+    </footer>
+
+</body>
+</html>
